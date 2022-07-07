@@ -1,0 +1,21 @@
+@import '~antd/dist/antd.css';
+
+
+.App {
+  height: 100%;
+}
+
+.myFolabe {
+  padding: 0 0 8px;
+  line-height: 1.5715;
+  white-space: initial;
+  text-align: left;
+  display: inline-block;
+  flex-grow: 0;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.ant-collapse-content>.ant-collapse-content-box {
+  padding: 0 !important;
+}
