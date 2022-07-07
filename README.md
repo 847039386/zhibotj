@@ -10,4 +10,5 @@ yarn install
 http://localhost:3000/
 npm run build
 
-数据库：mongodb
+数据库：mongodb:27017,GUI:Studio 3T
+
