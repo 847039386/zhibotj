@@ -9,3 +9,5 @@ antd:
 yarn install
 http://localhost:3000/
 npm run build
+
+数据库：mongodb
