@@ -1,31 +1,42 @@
 const Settlein = require('../models').Settlein;
+const Game = require('../models').Game
 const Work = require('../models').Work;
 const dayjs = require('dayjs')
 
 const create = (obje) => {
     let result = { success: false };
     return new Promise((resolve, reject) => {
-        Settlein.create(obje, (err, data) => {
-            if (!err) {
-                Work.create({
-                    settlein_id: data._id,
-                    company_id: data.company_id,
-                    game_id: data.game_id,
-                    user_id: data.user_id,
-                    platform_id: data.platform_id,
-                    start_of_time: data.clearing_start_time,
-                }, (errcWork, workDocs) => {
-                    // console.log('clearingData', clearingData._id)
-                    if (!errcWork) {
-                        resolve(Object.assign(result, { success: true, data: { settlein: data, work: workDocs } }));
+
+        Game.findById(obje.game_id).exec((gerr, gameData) => {
+            if (!gerr) {
+                const settle_status = gameData.settle_status
+                Settlein.create(Object.assign(obje, { next_clearing_time: nextClearing(settle_status) }), (err, data) => {
+                    if (!err) {
+                        Work.create({
+                            settlein_id: data._id,
+                            company_id: data.company_id,
+                            game_id: data.game_id,
+                            user_id: data.user_id,
+                            platform_id: data.platform_id,
+                            start_of_time: data.clearing_start_time,
+                        }, (errcWork, workDocs) => {
+                            // console.log('clearingData', clearingData._id)
+                            if (!errcWork) {
+                                resolve(Object.assign(result, { success: true, data: { settlein: data, work: workDocs } }));
+                            } else {
+                                resolve(Object.assign(result, { msg: 'clearing出现问题' }));
+                            }
+                        })
                     } else {
-                        resolve(Object.assign(result, { msg: 'clearing出现问题' }));
+                        resolve(Object.assign(result, { msg: err.message }));
                     }
                 })
             } else {
-                resolve(Object.assign(result, { msg: err.message }));
+                resolve(Object.assign(result, { msg: gerr.message }));
             }
         })
+
+
     });
 }
 
@@ -198,3 +209,19 @@ exports.hideByID = hideByID
 exports.find = find
 exports.findByUserId = findByUserId
 exports.findById = findById
+
+
+const nextClearing = (state) => {
+    if (state === 0) {
+        return dayjs().add(1, 'day').endOf('day')
+    } else if (state === 1) {
+        return dayjs().add(7, 'day').endOf('day')
+    } else if (state === 2) {
+        return dayjs().add(30, 'day').endOf('day')
+    } else if (state === 3) {
+        return dayjs().add(90, 'day').endOf('day')
+    } else if (state === 4) {
+        return dayjs().add(180, 'day').endOf('day')
+    }
+    return dayjs().add(360, 'day').endOf('day')
+}

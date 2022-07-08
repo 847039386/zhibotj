@@ -165,26 +165,21 @@ const tagRender = (props) => {
 
 
 const toDateStr = (date) => {
-  const dateM = moment(date).startOf('day')
-  const today = moment()
+  const dateM = moment(date).endOf('day')
+  const today = moment().startOf('day')
   if (today >= dateM) {
+    const diff = Math.abs(dateM.diff(today, 'days')) + 1
     return (
       <Tooltip title={
         <Text style={{ color: '#FFFFFF' }}>
           <Text style={{ color: '#FFFFFF' }}>距离下一次结算日期：{dateM.format('YYYY-MM-DD')}</Text><br />
-          <Text style={{ color: '#FFFFFF' }}>已超出 {Math.abs(dateM.diff(today, 'days'))} 天</Text>
+          <Text style={{ color: '#FFFFFF' }}>已超出 {diff} 天</Text>
         </Text>
       }>
-        <Text type="secondary">
-          {
-            dateM.diff(today, 'days') !== 0 ?
-              <Text>
-                <Text>超出</Text>
-                <Text strong style={{ padding: '0 5px', color: '#1890ff' }}>{dateM.diff(today, 'days')}</Text>
-                <Text> 天</Text>
-              </Text> :
-              <Text strong type="danger">请结算</Text>
-          }
+        <Text type="danger">
+          <Text>超出</Text>
+          <Text italic type="danger" strong style={{ padding: '0 5px', fontSize: 24 }}>{diff}</Text>
+          <Text> 天</Text>
         </Text>
       </Tooltip>
     )
@@ -201,10 +196,10 @@ const toDateStr = (date) => {
             dateM.diff(today, 'days') !== 0 ?
               <Text>
                 <Text>还剩</Text>
-                <Text strong style={{ padding: '0 5px', color: '#1890ff' }}>{dateM.diff(today, 'days')}</Text>
+                <Text strong style={{ padding: '0 5px', color: '#1890ff', fontSize: 24 }}>{dateM.diff(today, 'days')}</Text>
                 <Text> 天</Text>
               </Text> :
-              <Text strong type="success">请结算</Text>
+              <Text strong type="success" italic style={{ fontSize: 24 }}>今日结算</Text>
           }
         </Text>
       </Tooltip>

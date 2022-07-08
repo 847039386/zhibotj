@@ -368,7 +368,6 @@ class IsVisibleSettleinData extends React.Component {
             isv = false
         } if (game_status === 0) {
             nov.push('游戏被下架')
-            isv = false
         }
 
         if (platform_status === 2) {
@@ -376,7 +375,6 @@ class IsVisibleSettleinData extends React.Component {
             isv = false
         } if (platform_status === 0) {
             nov.push('平台被撤离')
-            isv = false
         }
 
         if (user_status === 2) {
