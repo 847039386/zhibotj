@@ -196,7 +196,7 @@ const toDateStr = (date) => {
             dateM.diff(today, 'days') !== 0 ?
               <Text>
                 <Text>还剩</Text>
-                <Text strong style={{ padding: '0 5px', color: '#1890ff', fontSize: 24 }}>{dateM.diff(today, 'days')}</Text>
+                <Text italic strong style={{ padding: '0 5px', color: '#1890ff', fontSize: 24 }}>{dateM.diff(today, 'days')}</Text>
                 <Text> 天</Text>
               </Text> :
               <Text strong type="success" italic style={{ fontSize: 24 }}>今日结算</Text>
